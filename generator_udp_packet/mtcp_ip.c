@@ -276,7 +276,7 @@ uint32_t mtcp_create_udp_packet(uint8_t *buf,          \
 	uint16_t paddign_zero_size = 0;
 	size_t offset = sizeof(ethernet_header_t) + sizeof(ip_header_t) + sizeof(udp_header_t);
 	size_t i = 0;
-
+int q = 0;
 	// ethernet ------------------------------------------------
 	memcpy(eth_tx->dst_mac, mac_dst, MAC_SIZE);         // DST MAC
 	memcpy(eth_tx->src_mac, mac_src, MAC_SIZE);         // copy MY MAC -> tx:src
@@ -303,10 +303,7 @@ uint32_t mtcp_create_udp_packet(uint8_t *buf,          \
 	udp_head_tx->src_port = mtcp_htons(src_port);
 	udp_head_tx->dst_port = mtcp_htons(dst_port);
 	udp_head_tx->len      = mtcp_htons(sizeof(udp_header_t) + data_size);
-	udp_head_tx->checksum = 0;
-
-	// Calc UDP checksum
-    udp_head_tx->checksum = 0;
+	udp_head_tx->checksum = 0; // NO check sum
 
 	// Add udp data = counter
 	for (i=0; i<data_size; i++) {
@@ -318,5 +315,5 @@ uint32_t mtcp_create_udp_packet(uint8_t *buf,          \
     mtcp_ip_debug_print( (const ip_header_t*)(buf + sizeof(ethernet_header_t)) );
     mtcp_udp_debug_print( (const udp_header_t*)(buf + sizeof(ethernet_header_t) + sizeof(ip_header_t)) );
 
-	return sizeof(ethernet_header_t) + ip_packet_size;
+	return sizeof(ethernet_header_t) + sizeof(ip_header_t) + sizeof(udp_header_t) + data_size;
 }

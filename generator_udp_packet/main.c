@@ -264,7 +264,7 @@ int main(int argc, char* argv[])
 
 	file_name_out_c = argv[ 8 ];
 
-    fo = fopen(file_name_out_c, "wt");
+    fo = fopen(file_name_out_c, "wb");
 
     if (fo == NULL){
         printf("FATAL ERROR: generate_output_file fopen return error.\n");
