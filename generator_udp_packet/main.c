@@ -23,7 +23,8 @@
 const char PRINT_TIRE[] = {"================================================================================\n"};
 const char PRINT_PROG_NAME[] = {" GENERATOR UDP PACKET (c) Sviridov Georgy 2023, www.lab85.ru sgot@inbox.ru\n"};
 
-#define FILE_RW_BLOCK_SIZE (1024)
+#define FILE_RW_BLOCK_SIZE       (1024)
+#define UDP_DATA_SIZE_BYTES_MAX  (1472)
 
 #define HEADER_ETH_IP_UDP_PACKET_SIZE ( sizeof(ethernet_header_t) + sizeof(ip_header_t) + sizeof(udp_header_t) )
 uint8_t eth_ip_udp_packet_buf[ 64 * 1024 ];
@@ -243,22 +244,22 @@ int main(int argc, char* argv[])
 
 	udp_port_dst_c = argv[ 5 ];
     udp_port_dst_w = atol(udp_port_dst_c);
-	if (udp_port_dst_w > 65536) {
+	if (udp_port_dst_w > 65535) {
     	printf("ERROR: UDP-PORT-DST.\n");
 		return 1;
 	}
 
 	udp_port_src_c = argv[ 6 ];
     udp_port_src_w = atol(udp_port_src_c);
-	if (udp_port_src_w > 65536) {
+	if (udp_port_src_w > 65535) {
     	printf("ERROR: UDP-PORT-SRC.\n");
 		return 1;
 	}
 
 	udp_data_size_c = argv[ 7 ];
 	udp_data_size_w = atol(udp_data_size_c);
-	if (udp_data_size_w > 65536) {
-    	printf("ERROR: UDP-DATA_SIZE.\n");
+	if (udp_data_size_w > UDP_DATA_SIZE_BYTES_MAX) {
+    	printf("ERROR: UDP-DATA_SIZE !!! MAX data size %d bytes\n", UDP_DATA_SIZE_BYTES_MAX);
 		return 1;
 	}
 
